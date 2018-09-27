@@ -8,6 +8,10 @@ object Functions {
     *   0, 1, 1, 2, 3, 5, ...
     * First numbers of the sequence are always 0 and 1.
     *
+    * It could be defined mathematically as such:
+    *   F(0) = 0, F(1) = 1
+    *   F(n) = F(n - 1) + F(n - 2)
+    *
     * Use tail-recursion, in order to ensure that it's correct use @tailrec annotation:
     *
     * @tailrec
@@ -35,6 +39,8 @@ object Functions {
     * High-order function (HOF) is a function which either takes
     * a function as a parameter or returns function as a result:
     *   def sum[A](as: Array[A], summator: (A, A) => A): A
+    *
+    * Arrays can be accessed by index like this `as(i)` with complexity O(1)
     *
     * @param as array of things to check for ordering
     * @param ordered function which knows how to compare pairs of values
