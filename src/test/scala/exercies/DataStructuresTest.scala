@@ -10,45 +10,45 @@ class DataStructuresTest extends FunSpec {
   describe("IList") {
     describe("apply") {
       it("works with empty list") {
-        assert(IList() == INil)
+        assert(List() == Nil)
       }
 
       it("works on single-element lists") {
-        assert(IList(1) == ICons(1, INil))
+        assert(List(1) == Cons(1, Nil))
       }
 
       it("works for multiple elements") {
-        assert(IList("a", "b", "c") == ICons("a", ICons("b", ICons("c", INil))))
+        assert(List("a", "b", "c") == Cons("a", Cons("b", Cons("c", Nil))))
       }
     }
 
     describe("sum") {
       it("works for empty list") {
-        assert(IList.sum(INil) == 0)
+        assert(List.sum(Nil) == 0)
       }
 
       it("sums up integers") {
-        assert(IList.sum(IList(1, 2, 3, 4)) == 10)
+        assert(List.sum(List(1, 2, 3, 4)) == 10)
       }
     }
 
     describe("product") {
       it("works on empty list") {
-        assert(IList.product(INil) == 1)
+        assert(List.product(Nil) == 1)
       }
 
       it("multiplies of elements of the list") {
-        assert(IList.product(IList(1, 2, 3, 4)) == 24)
+        assert(List.product(List(1, 2, 3, 4)) == 24)
       }
 
       it("handles zero") {
-        assert(IList.product(IList(1, 2, 0, 4)) == 0)
+        assert(List.product(List(1, 2, 0, 4)) == 0)
       }
     }
 
     describe("tail") {
       it("works on empty list") {
-        assert(IList.tail(INil) == INil)
+        assert(List.tail(Nil) == Nil)
       }
 
       /**
@@ -57,25 +57,25 @@ class DataStructuresTest extends FunSpec {
         * check for equality
         */
       it("all the elements, but first") {
-        assert(IList.tail(IList(1, 2, 3, 4)) == IList(2, 3, 4))
+        assert(List.tail(List(1, 2, 3, 4)) == List(2, 3, 4))
       }
     }
 
     describe("drop") {
       it("works on empty list") {
-        assert(IList.drop(INil, 0) == INil)
+        assert(List.drop(Nil, 0) == Nil)
       }
 
       it("dropping nothing is list itself") {
-        assert(IList.drop(IList(1, 2, 3, 4), 0) == IList(1, 2, 3, 4))
+        assert(List.drop(List(1, 2, 3, 4), 0) == List(1, 2, 3, 4))
       }
 
       it("drops n elements") {
-        assert(IList.drop(IList(1, 2, 3, 4), 2) == IList(3, 4))
+        assert(List.drop(List(1, 2, 3, 4), 2) == List(3, 4))
       }
 
       it("can drop more than the number of elements list containts") {
-        assert(IList.drop(IList(1, 2, 3, 4), 5) == INil)
+        assert(List.drop(List(1, 2, 3, 4), 5) == Nil)
       }
 
       /**
@@ -86,26 +86,26 @@ class DataStructuresTest extends FunSpec {
         * like PositiveInt or by using dependent types (which do not have official support in Scala yet)
         */
       it("works correctly if n is negative") {
-        assert(IList.drop(IList(1, 2, 3, 4), -42) == IList(1, 2, 3, 4))
+        assert(List.drop(List(1, 2, 3, 4), -42) == List(1, 2, 3, 4))
       }
     }
 
     describe("take") {
       it("works on empty list") {
-        assert(IList.take(INil, 10) == INil)
+        assert(List.take(Nil, 10) == Nil)
       }
 
       it("takes first N elements") {
-        assert(IList.take(IList(1, 2, 3, 4), 3) == IList(1, 2, 3))
+        assert(List.take(List(1, 2, 3, 4), 3) == List(1, 2, 3))
       }
 
       it("can not take more than there is") {
-        assert(IList.take(IList(1, 2, 3, 4), 5) == IList(1, 2, 3, 4))
+        assert(List.take(List(1, 2, 3, 4), 5) == List(1, 2, 3, 4))
       }
 
       it("can also take nothing") {
-        assert(IList.take(IList(1, 2, 3, 4), 0) == INil)
-        assert(IList.take(IList(1, 2, 3, 4), -10) == INil)
+        assert(List.take(List(1, 2, 3, 4), 0) == Nil)
+        assert(List.take(List(1, 2, 3, 4), -10) == Nil)
       }
     }
 
@@ -118,74 +118,74 @@ class DataStructuresTest extends FunSpec {
         * as compiler infers types for the function parameters as a whole
         */
       it("works on empty list") {
-        assert(IList.dropWhile(INil, (_: Int) => true) == INil)
+        assert(List.dropWhile(Nil, (_: Int) => true) == Nil)
       }
 
       it("works with false predicate") {
-        assert(IList.dropWhile(IList(1, 2, 3, 4), (_: Int) => false) == IList(1, 2, 3, 4))
+        assert(List.dropWhile(List(1, 2, 3, 4), (_: Int) => false) == List(1, 2, 3, 4))
       }
 
       it("works with true predicate") {
-        assert(IList.dropWhile(IList(1, 2, 3, 4), (_: Int) => true) == INil)
+        assert(List.dropWhile(List(1, 2, 3, 4), (_: Int) => true) == Nil)
       }
 
       it("drops while predicate is true") {
-        assert(IList.dropWhile(IList(1, 2, 3, 4), (x: Int) => x <= 2) == IList(3, 4))
+        assert(List.dropWhile(List(1, 2, 3, 4), (x: Int) => x <= 2) == List(3, 4))
       }
     }
 
     describe("init") {
       it("works on empty list") {
-        assert(IList.init(INil) == INil)
+        assert(List.init(Nil) == Nil)
       }
 
       it("works for one-element lists") {
-        assert(IList.init(IList(1)) == INil)
+        assert(List.init(List(1)) == Nil)
       }
 
       it("returns everything but the last element") {
-        assert(IList.init(IList(1, 2, 3, 4)) == IList(1, 2, 3))
+        assert(List.init(List(1, 2, 3, 4)) == List(1, 2, 3))
       }
     }
 
     describe("productFold") {
       it("works on empty list") {
-        assert(IList.productFoldRight(INil) == 1)
+        assert(List.productFoldRight(Nil) == 1)
       }
 
       it("multiplies of elements of the list") {
-        assert(IList.productFoldRight(IList(1, 2, 3, 4)) == 24)
+        assert(List.productFoldRight(List(1, 2, 3, 4)) == 24)
       }
 
       it("handles zero") {
-        assert(IList.productFoldRight(IList(1, 2, 0, 4)) == 0)
+        assert(List.productFoldRight(List(1, 2, 0, 4)) == 0)
       }
     }
 
     describe("length") {
       it("works on empty list") {
-        assert(IList.length(INil) == 0)
+        assert(List.length(Nil) == 0)
       }
 
       it("counts the number of elements in non-empty list") {
-        assert(IList.length(IList(1, 2, 3)) == 3)
+        assert(List.length(List(1, 2, 3)) == 3)
       }
     }
 
     describe("foldLeft") {
-      def sum(as: IList[Int]): Int =
-        IList.foldLeft(as, 0)(_ + _)
+      def sum(as: List[Int]): Int =
+        List.foldLeft(as, 0)(_ + _)
 
       it("works on empty list") {
-        assert(sum(INil) == 0)
+        assert(sum(Nil) == 0)
       }
 
       it("works on even number of elements") {
-        assert(sum(IList(1, 2, 3, 4)) == 10)
+        assert(sum(List(1, 2, 3, 4)) == 10)
       }
 
       it("works on odd number of elements") {
-        assert(sum(IList(1, 2, 3)) == 6)
+        assert(sum(List(1, 2, 3)) == 6)
       }
 
       // What's the reason it doesn't?
@@ -197,195 +197,195 @@ class DataStructuresTest extends FunSpec {
 
     describe("sumFoldLeft") {
       it("works for empty list") {
-        assert(IList.sumFoldLeft(INil) == 0)
+        assert(List.sumFoldLeft(Nil) == 0)
       }
 
       it("sums up integers") {
-        assert(IList.sumFoldLeft(IList(1, 2, 3, 4)) == 10)
+        assert(List.sumFoldLeft(List(1, 2, 3, 4)) == 10)
       }
     }
 
     describe("productFoldRight") {
       it("works on empty list") {
-        assert(IList.productFoldRight(INil) == 1)
+        assert(List.productFoldRight(Nil) == 1)
       }
 
       it("multiplies of elements of the list") {
-        assert(IList.productFoldRight(IList(1, 2, 3, 4)) == 24)
+        assert(List.productFoldRight(List(1, 2, 3, 4)) == 24)
       }
 
       it("handles zero") {
-        assert(IList.productFoldRight(IList(1, 2, 0, 4)) == 0)
+        assert(List.productFoldRight(List(1, 2, 0, 4)) == 0)
       }
     }
 
     describe("reverse") {
       it("works on empty list") {
-        assert(IList.reverse(INil) == INil)
+        assert(List.reverse(Nil) == Nil)
       }
 
       it("works on single element lists") {
-        assert(IList.reverse(IList(1)) == IList(1))
+        assert(List.reverse(List(1)) == List(1))
       }
 
       it("reverses list") {
-        assert(IList.reverse(IList(1, 2, 3)) == IList(3, 2, 1))
+        assert(List.reverse(List(1, 2, 3)) == List(3, 2, 1))
       }
     }
 
     describe("append") {
       it("works on empty list") {
-        assert(IList.append(IList.empty[Int], 1) == IList(1))
+        assert(List.append(List.empty[Int], 1) == List(1))
       }
 
       it("appens element to a list") {
-        assert(IList.append(IList(1, 2, 3), 4) == IList(1, 2, 3, 4))
+        assert(List.append(List(1, 2, 3), 4) == List(1, 2, 3, 4))
       }
     }
 
     describe("union") {
       it("works with empty lists") {
-        assert(IList.union(IList.empty[Int], IList.empty[Int]) == IList.empty[Int])
+        assert(List.union(List.empty[Int], List.empty[Int]) == List.empty[Int])
       }
 
       it("works with empty list on the left") {
-        assert(IList.union(IList.empty[Int], IList(1, 2, 3)) == IList(1, 2, 3))
+        assert(List.union(List.empty[Int], List(1, 2, 3)) == List(1, 2, 3))
       }
 
       it("works with empty list on the right") {
-        assert(IList.union(IList(1, 2, 3), IList.empty[Int]) == IList(1, 2, 3))
+        assert(List.union(List(1, 2, 3), List.empty[Int]) == List(1, 2, 3))
       }
 
       it("concatenates lists") {
-        assert(IList.union(IList(1, 2, 3), IList(4, 5, 6)) == IList(1, 2, 3, 4, 5, 6))
+        assert(List.union(List(1, 2, 3), List(4, 5, 6)) == List(1, 2, 3, 4, 5, 6))
       }
     }
 
     describe("plusOne") {
       it("works with empty lists") {
-        assert(IList.plusOne(INil) == INil)
+        assert(List.plusOne(Nil) == Nil)
       }
 
       it("adds one") {
-        assert(IList.plusOne(IList(1, 2, 3)) == IList(2, 3, 4))
+        assert(List.plusOne(List(1, 2, 3)) == List(2, 3, 4))
       }
     }
 
     describe("doubleToString") {
       it("works with empty lists") {
-        assert(IList.doubleToString(INil) == INil)
+        assert(List.doubleToString(Nil) == Nil)
       }
 
       it("adds one") {
-        assert(IList.doubleToString(IList(1, 2, 3)) == IList("1", "2", "3"))
+        assert(List.doubleToString(List(1, 2, 3)) == List("1", "2", "3"))
       }
     }
 
     describe("map") {
       it("works on empty lists") {
-        assert(IList.map(IList.empty[Int])(_ + 1) == IList.empty[Int])
+        assert(List.map(List.empty[Int])(_ + 1) == List.empty[Int])
       }
 
       it("maps a function over a list") {
-        assert(IList.map(IList(1, 2, 3))(_ + 1) == IList(2, 3, 4))
+        assert(List.map(List(1, 2, 3))(_ + 1) == List(2, 3, 4))
       }
     }
 
     describe("filter") {
       it("works on empty list") {
-        assert(IList.filter(IList.empty[Int])(_ % 2 == 0) == IList.empty[Int])
+        assert(List.filter(List.empty[Int])(_ % 2 == 0) == List.empty[Int])
       }
 
       it("filters elements which do not match predicate") {
-        assert(IList.filter(IList(1, 2, 3, 4, 5, 6))(_ % 2 == 0) == IList(2, 4, 6))
+        assert(List.filter(List(1, 2, 3, 4, 5, 6))(_ % 2 == 0) == List(2, 4, 6))
       }
     }
 
     describe("flatMap") {
       it("works on empty list") {
-        assert(IList.flatMap(IList.empty[Int])(_ => IList(1, 2, 3)) == IList.empty[Int])
+        assert(List.flatMap(List.empty[Int])(_ => List(1, 2, 3)) == List.empty[Int])
       }
 
       it("maps and flattens") {
-        val multiplier123 = (x: Int) => IList.map(IList(1, 2, 3))(_ * x)
+        val multiplier123 = (x: Int) => List.map(List(1, 2, 3))(_ * x)
 
-        assert(IList.flatMap(IList(1, 2, 3))(multiplier123) == IList(1, 2, 3, 2, 4, 6, 3, 6, 9))
+        assert(List.flatMap(List(1, 2, 3))(multiplier123) == List(1, 2, 3, 2, 4, 6, 3, 6, 9))
       }
     }
 
     describe("filterFlatMap") {
       it("works on empty list") {
-        assert(IList.filterFlatMap(IList.empty[Int])(_ % 2 == 0) == IList.empty[Int])
+        assert(List.filterFlatMap(List.empty[Int])(_ % 2 == 0) == List.empty[Int])
       }
 
       it("filters elements which do not match predicate") {
-        assert(IList.filterFlatMap(IList(1, 2, 3, 4, 5, 6))(_ % 2 == 0) == IList(2, 4, 6))
+        assert(List.filterFlatMap(List(1, 2, 3, 4, 5, 6))(_ % 2 == 0) == List(2, 4, 6))
       }
     }
 
     describe("sumElements") {
       it("works on empty lists") {
-        assert(IList.sumElements(IList.empty[Int], IList.empty[Int]) == IList.empty[Int])
+        assert(List.sumElements(List.empty[Int], List.empty[Int]) == List.empty[Int])
       }
 
       it("sums corresponding pairs") {
-        assert(IList.sumElements(IList(1, 2, 3), IList(4, 5, 6)) == IList(5, 7, 9))
+        assert(List.sumElements(List(1, 2, 3), List(4, 5, 6)) == List(5, 7, 9))
       }
 
       it("dies if lengths don't match") {
         assertThrows[RuntimeException] {
-          IList.sumElements(IList(1, 2, 3), IList(4, 5))
+          List.sumElements(List(1, 2, 3), List(4, 5))
         }
       }
     }
 
     describe("zipWith") {
       it("works on empty lists") {
-        assert(IList.zipWith(IList.empty[Int], IList.empty[Int])((_, _)) == IList.empty[(Int, Int)])
+        assert(List.zipWith(List.empty[Int], List.empty[Int])((_, _)) == List.empty[(Int, Int)])
       }
 
       it("sums corresponding pairs") {
-        assert(IList.zipWith(IList(1, 2, 3), IList(4, 5, 6))((_, _)) == IList((1, 4), (2, 5), (3, 6)))
+        assert(List.zipWith(List(1, 2, 3), List(4, 5, 6))((_, _)) == List((1, 4), (2, 5), (3, 6)))
       }
 
       it("dies if lengths don't match") {
         assertThrows[RuntimeException] {
-          IList.zipWith(IList(1, 2, 3), IList(4, 5))((_, _))
+          List.zipWith(List(1, 2, 3), List(4, 5))((_, _))
         }
       }
     }
 
     describe("hasSubsequence") {
       it("works on empty lists") {
-        assert(IList.hasSubsequence(INil, INil))
+        assert(List.hasSubsequence(Nil, Nil))
       }
 
       it("nothing is subset of anything") {
-        assert(IList.hasSubsequence(IList(1, 2, 3), INil))
+        assert(List.hasSubsequence(List(1, 2, 3), Nil))
       }
 
       it("nothing is subset of empty set") {
-        assert(!IList.hasSubsequence(INil, IList(1, 2, 3)))
+        assert(!List.hasSubsequence(Nil, List(1, 2, 3)))
       }
 
       it("bigger subset can not be subsequence of smaller one") {
-        assert(!IList.hasSubsequence(IList(1, 2, 3), IList(1, 2, 3, 4)))
+        assert(!List.hasSubsequence(List(1, 2, 3), List(1, 2, 3, 4)))
       }
 
       it("detect subsets") {
-        assert(IList.hasSubsequence(IList(1, 2, 3, 4), IList(2, 3)))
+        assert(List.hasSubsequence(List(1, 2, 3, 4), List(2, 3)))
       }
 
       it("detects subsets on left boundary") {
-        assert(IList.hasSubsequence(IList(1, 2, 3, 4), IList(1, 2)))
+        assert(List.hasSubsequence(List(1, 2, 3, 4), List(1, 2)))
       }
 
       it("detects subsets on right boundary") {
-        assert(IList.hasSubsequence(IList(1, 2, 3, 4), IList(3, 4)))
+        assert(List.hasSubsequence(List(1, 2, 3, 4), List(3, 4)))
       }
 
       it("correctly detects absence on subset") {
-        assert(!IList.hasSubsequence(IList(1, 2, 3, 4), IList(2, 5)))
+        assert(!List.hasSubsequence(List(1, 2, 3, 4), List(2, 5)))
       }
     }
   }

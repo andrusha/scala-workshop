@@ -1,6 +1,7 @@
 package exercies
 
 import scala.annotation.tailrec
+import scala.collection.immutable.{List => _}
 
 object DataStructures {
 
@@ -10,12 +11,14 @@ object DataStructures {
     *   data List a = Empty | Cons a (List a)
     *
     *   Cons 1 (Cons 2 (INil)) = [1, 2]
+    *
+    * We prefix our structures with `I` in order not to confuse with stdlib
     */
-  sealed trait IList[+A]
-  case object INil extends IList[Nothing]
-  case class ICons[+A](head: A, tail: IList[A]) extends IList[A]
+  sealed trait List[+A]
+  case object Nil extends List[Nothing]
+  case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
-  object IList {
+  object List {
     /**
       * It's convenience method, as empty element is the same for all
       * Lists (Nothing is bottom type of any type), but we have to
@@ -23,7 +26,7 @@ object DataStructures {
       *
       * @return INil
       */
-    def empty[A]: IList[A] = IList[A]()
+    def empty[A]: List[A] = List[A]()
 
     /**
       * Syntax `A*` defines variadic function, or a function, which takes
@@ -41,9 +44,9 @@ object DataStructures {
       * @param as list of objects to create list from
       * @return a list of objects
       */
-    def apply[A](as: A*): IList[A] = {
-      if (as.isEmpty) INil
-      else ICons(as.head, apply(as.tail: _*))
+    def apply[A](as: A*): List[A] = {
+      if (as.isEmpty) Nil
+      else Cons(as.head, apply(as.tail: _*))
     }
 
     /**
@@ -52,29 +55,29 @@ object DataStructures {
       * @param ints to sum
       * @return sum of all the elements in the list
       */
-    def sum(ints: IList[Int]): Int = ints match {
-      case INil => 0
-      case ICons(x, xs) => x + sum(xs)
+    def sum(ints: List[Int]): Int = ints match {
+      case Nil => 0
+      case Cons(x, xs) => x + sum(xs)
     }
 
     /**
       * @param ds
       * @return the result of all elements of ds multiplied together
       */
-    def product(ds: IList[Double]): Double = ???
+    def product(ds: List[Double]): Double = ???
 
     /**
       * @param as
       * @return as without the first element
       */
-    def tail[A](as: IList[A]): IList[A] = ???
+    def tail[A](as: List[A]): List[A] = ???
 
     /**
       * @param as
       * @param n number of elements to remove
       * @return as without first n elements
       */
-    def drop[A](as: IList[A], n: Int): IList[A] = ???
+    def drop[A](as: List[A], n: Int): List[A] = ???
 
     /**
       * Implement function which drops elements while `f` holds
@@ -83,7 +86,7 @@ object DataStructures {
       * @param f predicate
       * @return remainder of as filtered by f
       */
-    def dropWhile[A](as: IList[A], f: A => Boolean): IList[A] = ???
+    def dropWhile[A](as: List[A], f: A => Boolean): List[A] = ???
 
     /**
       * Implement "opposite" of tail
@@ -91,7 +94,7 @@ object DataStructures {
       * @param as
       * @return as without the very last element
       */
-    def init[A](as: IList[A]): IList[A] = ???
+    def init[A](as: List[A]): List[A] = ???
 
     /**
       * Advanced, will be useful for other advanced tasks
@@ -100,7 +103,7 @@ object DataStructures {
       * @param n how many elements to take
       * @return first n elements of the given list
       */
-    def take[A](as: IList[A], n: Int): IList[A] = ???
+    def take[A](as: List[A], n: Int): List[A] = ???
 
     /**
       * Fold is one of the patterns of generalized recursion,
@@ -122,7 +125,7 @@ object DataStructures {
       * @param f combinator
       * @return folded list using f
       */
-    def foldRight[A, B](as: IList[A], z: B)(f: (A, B) => B): B = ???
+    def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = ???
 
     /**
       * Implement product using foldRight method
@@ -133,7 +136,7 @@ object DataStructures {
       * @param ds
       * @return the result of all elements of ds multiplied together
       */
-    def productFoldRight(ds: IList[Double]): Double = ???
+    def productFoldRight(ds: List[Double]): Double = ???
 
     /**
       * Implement length using foldRight
@@ -143,7 +146,7 @@ object DataStructures {
       * @param as
       * @return number of elements in the list
       */
-    def length[A](as: IList[A]): Int = ???
+    def length[A](as: List[A]): Int = ???
 
     /**
       * Fold which is running from left to right is possible
@@ -163,14 +166,14 @@ object DataStructures {
       * @param f combinator
       * @return folded list using f
       */
-    def foldLeft[A, B](as: IList[A], z: B)(f: (A, B) => B): B = ???
+    def foldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = ???
 
     /**
       * Implement sum using fold pattern
       *
       * @return sum of all the elements in the list
       */
-    def sumFoldLeft(ds: IList[Int]): Int = ???
+    def sumFoldLeft(ds: List[Int]): Int = ???
 
     /**
       * Implement product using fold pattern
@@ -178,12 +181,12 @@ object DataStructures {
       * @param ds
       * @return
       */
-    def productFoldLeft(ds: IList[Int]): Int = ???
+    def productFoldLeft(ds: List[Int]): Int = ???
 
     /**
       * Implement list reversal using fold
       */
-    def reverse[A](as: IList[A]): IList[A] = ???
+    def reverse[A](as: List[A]): List[A] = ???
 
     /**
       * Implement it in linear time (is it possible to do it in constant time?)
@@ -192,7 +195,7 @@ object DataStructures {
       * @param a element to append
       * @return list with appended element
       */
-    def append[A](as: IList[A], a: A): IList[A] = ???
+    def append[A](as: List[A], a: A): List[A] = ???
 
     /**
       * Preferred complexity O(n + m)
@@ -201,19 +204,19 @@ object DataStructures {
       * @param ys right list
       * @return xs + ys
       */
-    def union[A](xs: IList[A], ys: IList[A]): IList[A] = ???
+    def union[A](xs: List[A], ys: List[A]): List[A] = ???
 
     /**
       * @param xs
       * @return one added to each element in the list
       */
-    def plusOne(xs: IList[Int]): IList[Int] = ???
+    def plusOne(xs: List[Int]): List[Int] = ???
 
     /**
       * @param ds
       * @return list doubles transformed to strings
       */
-    def doubleToString(ds: IList[Double]): IList[String] = ???
+    def doubleToString(ds: List[Double]): List[String] = ???
 
     /**
       * Is it possible to implement it in tail-recursive manner? Using fold?
@@ -222,14 +225,14 @@ object DataStructures {
       * @param f transformator
       * @return list with all the elements being transformed by f
       */
-    def map[A, B](as: IList[A])(f: A => B): IList[B] = ???
+    def map[A, B](as: List[A])(f: A => B): List[B] = ???
 
     /**
       * @param as
       * @param f predicate
       * @return list filtered by predicate f
       */
-    def filter[A](as: IList[A])(f: A => Boolean): IList[A] = ???
+    def filter[A](as: List[A])(f: A => Boolean): List[A] = ???
 
     /**
       * Flat Map is equivalent to .map.flatten
@@ -240,7 +243,7 @@ object DataStructures {
       * @param f transformator which returns a list itself
       * @return all the transformed lists chained together
       */
-    def flatMap[A, B](as: IList[A])(f: A => IList[B]): IList[B] = ???
+    def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] = ???
 
     /**
       * Implement filtering using flatMap
@@ -249,7 +252,7 @@ object DataStructures {
       * @param f predicate
       * @return list filtered by predicate f
       */
-    def filterFlatMap[A](as: IList[A])(f: A => Boolean): IList[A] = ???
+    def filterFlatMap[A](as: List[A])(f: A => Boolean): List[A] = ???
 
     /**
       * Sum each corresponding pair from `as` and `bs`
@@ -263,7 +266,7 @@ object DataStructures {
       * @param bs
       * @return a list of sum of pairs from corresponding lists
       */
-    def sumElements(as: IList[Int], bs: IList[Int]): IList[Int] = ???
+    def sumElements(as: List[Int], bs: List[Int]): List[Int] = ???
 
     /**
       * @param as
@@ -271,7 +274,7 @@ object DataStructures {
       * @param f combiner
       * @return pairs of elements combined together with f
       */
-    def zipWith[A, B, C](as: IList[A], bs: IList[B])(f: (A, B) => C): IList[C] = ???
+    def zipWith[A, B, C](as: List[A], bs: List[B])(f: (A, B) => C): List[C] = ???
 
     /**
       * Advanced
@@ -283,7 +286,7 @@ object DataStructures {
       * @param sub subsequence
       * @return if subsequence was found or not
       */
-    def hasSubsequence[A](sup: IList[A], sub: IList[A]): Boolean = ???
+    def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = ???
   }
 
   /**

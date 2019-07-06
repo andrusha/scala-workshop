@@ -8,124 +8,124 @@ import scala.annotation.tailrec
   * Better solutions are welcome!
   */
 object DataStructures {
-  def product(ds: IList[Double]): Double = ds match {
-    case INil => 1
-    case ICons(x, xs) => x * product(xs)
+  def product(ds: List[Double]): Double = ds match {
+    case Nil => 1
+    case Cons(x, xs) => x * product(xs)
   }
 
-  def tail[A](as: IList[A]): IList[A] = as match {
-    case INil => INil
-    case ICons(_, t) => t
-  }
-
-  @tailrec
-  def drop[A](as: IList[A], n: Int): IList[A] = as match {
-    case INil => INil
-    case ICons(_, _) if n <= 0 => as
-    case ICons(_, t) => drop(t, n - 1)
+  def tail[A](as: List[A]): List[A] = as match {
+    case Nil => Nil
+    case Cons(_, t) => t
   }
 
   @tailrec
-  def dropWhile[A](as: IList[A], f: A => Boolean): IList[A] = as match {
-    case INil => INil
-    case ICons(h, t) if f(h) => dropWhile(t, f)
-    case ICons(_, _) => as
+  def drop[A](as: List[A], n: Int): List[A] = as match {
+    case Nil => Nil
+    case Cons(_, _) if n <= 0 => as
+    case Cons(_, t) => drop(t, n - 1)
   }
 
-  def init[A](as: IList[A]): IList[A] = as match {
-    case INil => INil
-    case ICons(_, INil) => INil
-    case ICons(h, t) => ICons(h, init(t))
+  @tailrec
+  def dropWhile[A](as: List[A], f: A => Boolean): List[A] = as match {
+    case Nil => Nil
+    case Cons(h, t) if f(h) => dropWhile(t, f)
+    case Cons(_, _) => as
   }
 
-  def take[A](as: IList[A], n: Int): IList[A] = {
-    def loop(xs: IList[A], x: Int, acc: IList[A]): IList[A] = xs match {
-      case ICons(head, tail) if x > 0 => ICons(head, loop(tail, x - 1, acc))
+  def init[A](as: List[A]): List[A] = as match {
+    case Nil => Nil
+    case Cons(_, Nil) => Nil
+    case Cons(h, t) => Cons(h, init(t))
+  }
+
+  def take[A](as: List[A], n: Int): List[A] = {
+    def loop(xs: List[A], x: Int, acc: List[A]): List[A] = xs match {
+      case Cons(head, tail) if x > 0 => Cons(head, loop(tail, x - 1, acc))
       case _ => acc
     }
 
-    loop(as, n, INil)
+    loop(as, n, Nil)
   }
 
-  def foldRight[A, B](as: IList[A], z: B)(f: (A, B) => B): B =
+  def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B =
     as match {
-      case ICons(x, xs) => f(x, foldRight(xs, z)(f))
-      case INil => z
+      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+      case Nil => z
     }
 
-  def productFoldRight(ds: IList[Double]): Double =
+  def productFoldRight(ds: List[Double]): Double =
     foldRight(ds, 1.0)(_ * _)
 
-  def length[A](as: IList[A]): Int =
+  def length[A](as: List[A]): Int =
     foldRight(as, 0)((_, b) => 1 + b)
 
   @tailrec
-  def foldLeft[A, B](as: IList[A], z: B)(f: (A, B) => B): B =
+  def foldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B =
     as match {
-      case ICons(x, xs) => foldLeft(xs, f(x, z))(f)
-      case INil => z
+      case Cons(x, xs) => foldLeft(xs, f(x, z))(f)
+      case Nil => z
     }
 
-  def sumFoldLeft(ds: IList[Int]): Int =
+  def sumFoldLeft(ds: List[Int]): Int =
     foldLeft(ds, 0)(_ + _)
 
-  def productFoldLeft(ds: IList[Int]): Int =
+  def productFoldLeft(ds: List[Int]): Int =
     foldLeft(ds, 1)(_ * _)
 
-  def reverse[A](as: IList[A]): IList[A] =
-    foldLeft(as, IList.empty[A])((h, t) => ICons(h, t))
+  def reverse[A](as: List[A]): List[A] =
+    foldLeft(as, List.empty[A])((h, t) => Cons(h, t))
 
-  def append[A](as: IList[A], a: A): IList[A] =
-    foldRight(as, IList(a))((h, t) => ICons(h, t))
+  def append[A](as: List[A], a: A): List[A] =
+    foldRight(as, List(a))((h, t) => Cons(h, t))
 
-  def union[A](xs: IList[A], ys: IList[A]): IList[A] =
-    foldRight(xs, ys)((h, t) => ICons(h, t))
+  def union[A](xs: List[A], ys: List[A]): List[A] =
+    foldRight(xs, ys)((h, t) => Cons(h, t))
 
-  def plusOne(xs: IList[Int]): IList[Int] =
-    foldRight(xs, IList.empty[Int])((h, t) => ICons(h + 1, t))
+  def plusOne(xs: List[Int]): List[Int] =
+    foldRight(xs, List.empty[Int])((h, t) => Cons(h + 1, t))
 
-  def doubleToString(ds: IList[Double]): IList[String] =
-    foldRight(ds, IList.empty[String])((h, t) => ICons(h.toString, t))
+  def doubleToString(ds: List[Double]): List[String] =
+    foldRight(ds, List.empty[String])((h, t) => Cons(h.toString, t))
 
-  def map[A, B](as: IList[A])(f: A => B): IList[B] =
-    foldRight(as, IList.empty[B])((h, t) => ICons(f(h), t))
+  def map[A, B](as: List[A])(f: A => B): List[B] =
+    foldRight(as, List.empty[B])((h, t) => Cons(f(h), t))
 
-  def filter[A](as: IList[A])(f: A => Boolean): IList[A] =
-    foldRight(as, IList.empty[A]) { (h, t) =>
+  def filter[A](as: List[A])(f: A => Boolean): List[A] =
+    foldRight(as, List.empty[A]) { (h, t) =>
       if (f(h))
-        ICons(h, t)
+        Cons(h, t)
       else
         t
     }
-  def flatMap[A, B](as: IList[A])(f: A => IList[B]): IList[B] =
-    foldRight(as, IList.empty[B])((h, t) => IList.union(f(h), t))
+  def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] =
+    foldRight(as, List.empty[B])((h, t) => List.union(f(h), t))
 
-  def filterFlatMap[A](as: IList[A])(f: A => Boolean): IList[A] =
-    flatMap(as)(a => if (f(a)) IList(a) else INil)
+  def filterFlatMap[A](as: List[A])(f: A => Boolean): List[A] =
+    flatMap(as)(a => if (f(a)) List(a) else Nil)
 
-  def sumElements(as: IList[Int], bs: IList[Int]): IList[Int] = (as, bs) match {
-    case (ICons(a, ass), ICons(b, bss)) => ICons(a + b, sumElements(ass, bss))
-    case (INil, INil) => INil
+  def sumElements(as: List[Int], bs: List[Int]): List[Int] = (as, bs) match {
+    case (Cons(a, ass), Cons(b, bss)) => Cons(a + b, sumElements(ass, bss))
+    case (Nil, Nil) => Nil
     case _ => sys.error("List sizes must match")
   }
 
-  def zipWith[A, B, C](as: IList[A], bs: IList[B])(f: (A, B) => C): IList[C] = (as, bs) match {
-    case (ICons(a, ass), ICons(b, bss)) => ICons(f(a, b), zipWith(ass, bss)(f))
-    case (INil, INil) => INil
+  def zipWith[A, B, C](as: List[A], bs: List[B])(f: (A, B) => C): List[C] = (as, bs) match {
+    case (Cons(a, ass), Cons(b, bss)) => Cons(f(a, b), zipWith(ass, bss)(f))
+    case (Nil, Nil) => Nil
     case _ => sys.error("List sizes must match")
   }
 
-  def hasSubsequence[A](sup: IList[A], sub: IList[A]): Boolean = {
-    val subLength = IList.length(sub)
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+    val subLength = List.length(sub)
 
     @tailrec
-    def loop(xs: IList[A], p: Boolean): Boolean = xs match {
-      case ICons(_, t) => IList.take(xs, subLength) == sub || loop(t, p)
-      case INil => p
+    def loop(xs: List[A], p: Boolean): Boolean = xs match {
+      case Cons(_, t) => List.take(xs, subLength) == sub || loop(t, p)
+      case Nil => p
     }
 
     sub match {
-      case INil => true
+      case Nil => true
       case _ => loop(sup, false)
     }
   }

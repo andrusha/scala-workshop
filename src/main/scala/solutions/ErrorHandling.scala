@@ -1,0 +1,5 @@
+package solutions
+
+object ErrorHandling {
+
+}
