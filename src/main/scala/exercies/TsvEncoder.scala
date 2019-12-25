@@ -44,8 +44,8 @@ object Tsv {
 
   implicit def genericEncoder[A, R](
     implicit
-      gen: Generic[A] { type Repr = R },
+      gen: Generic.Aux[A, R],
       enc: TsvEncoder[R]
     ): TsvEncoder[A] =
-      TsvEncoder.pure[A](a => enc.encode(gen.to(a)))
+      TsvEncoder.pure(a => enc.encode(gen.to(a)))
 }
